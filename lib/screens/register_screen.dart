@@ -71,6 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             isError: true,
           );
         }
+        NavigationHelper.navigateToLogin(context);
       } else {
         _showMessage(result['message'], isError: true);
       }
@@ -88,8 +89,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _phoneController.text.trim().isEmpty ||
         _passwordController.text.isEmpty ||
         _confirmPasswordController.text.isEmpty ||
-        _selectedGender == null ||
-        !_agreeTerms) {
+        _selectedGender == null) {
       _showMessage('Vui lòng điền đầy đủ thông tin bắt buộc!', isError: true);
       return false;
     }
@@ -97,6 +97,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     // Kiểm tra email hợp lệ
     if (!_isValidEmail(_emailController.text.trim())) {
       _showMessage('Email không hợp lệ!', isError: true);
+      return false;
+    }
+
+    // Đồng ý điều khoản
+    if (!_agreeTerms) {
+      _showMessage('Chưa chấp nhận điều khoản!', isError: true);
       return false;
     }
 
@@ -201,7 +207,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Text(
             'Tôi đồng ý với Điều khoản sử dụng và Chính sách bảo mật của UTC2',
             style: TextStyle(
-              color: Colors.grey[500],
+              color: Colors.grey[700],
               fontSize: 12,
             ),
           ),

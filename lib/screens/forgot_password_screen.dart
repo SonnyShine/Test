@@ -66,6 +66,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
       if (emailResult['success']) {
         _showMessage('Mật khẩu mới đã được gửi đến email của bạn!', isError: false);
+        NavigationHelper.navigateToLogin(context);
       } else {
         _showMessage('Đã cập nhật mật khẩu nhưng không thể gửi email: ${emailResult['message']}', isError: true);
       }

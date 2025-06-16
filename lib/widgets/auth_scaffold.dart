@@ -14,7 +14,7 @@ class AuthScaffold extends StatelessWidget {
         ),
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: EdgeInsets.all(24),
+            padding: EdgeInsets.symmetric(horizontal: 24),
             child: child,
           ),
         ),

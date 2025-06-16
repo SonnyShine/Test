@@ -37,10 +37,6 @@ class _LoginScreenState extends State<LoginScreen> {
       if (result['success']) {
         final user = result['user'];
         _showMessage(result['message'], isError: false);
-
-        // TODO: Lưu thông tin user và navigate to home
-        // await _saveUserSession(user);
-        // NavigationHelper.navigateToHome(context, user);
       } else {
         _showMessage(result['message'], isError: true);
       }

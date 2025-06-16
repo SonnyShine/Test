@@ -88,158 +88,150 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AuthScaffold(
-      child: Column(
-        children: [
-          SizedBox(height: 40),
-          UTC2Logo(),
-          SizedBox(height: 20),
-          Text(
-            'Tạo tài khoản mới',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 8),
-          Text(
-            'Chào mừng bạn đến UTC2 ngay hôm nay',
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: 16,
-            ),
-          ),
-          SizedBox(height: 40),
-          CustomTextField(
-            hintText: 'Họ và tên',
-            prefixIcon: Icons.person,
-            controller: _nameController,
-          ),
-          CustomTextField(
-            hintText: 'Email',
-            prefixIcon: Icons.email,
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-          ),
-          CustomTextField(
-            hintText: 'Số điện thoại',
-            prefixIcon: Icons.phone,
-            controller: _phoneController,
-            keyboardType: TextInputType.phone,
-          ),
-          CustomTextField(
-            hintText: 'mm/dd/yyyy',
-            prefixIcon: Icons.calendar_today,
-            controller: _birthdateController,
-            isDatePicker: true,
-          ),
-          CustomDropdown(
-            hintText: 'Chọn giới tính',
-            prefixIcon: Icons.person_outline,
-            items: ['Nam', 'Nữ', 'Khác'],
-            selectedValue: _selectedGender,
-            onChanged: (String? newValue) {
-              setState(() => _selectedGender = newValue);
-            },
-          ),
-          CustomTextField(
-            hintText: 'Mật khẩu',
-            prefixIcon: Icons.lock,
-            controller: _passwordController,
-            isPassword: true,
-          ),
-          CustomTextField(
-            hintText: 'Xác nhận mật khẩu',
-            prefixIcon: Icons.lock,
-            controller: _confirmPasswordController,
-            isPassword: true,
-          ),
-          Row(
-            children: [
-              Checkbox(
-                value: _agreeTerms,
-                onChanged: (bool? value) {
-                  setState(() => _agreeTerms = value ?? false);
-                },
-                fillColor: MaterialStateProperty.all(Colors.orange),
-              ),
-              Expanded(
-                child: Text(
-                  'Tôi đồng ý với Điều khoản sử dụng và Chính sách bảo mật của UTC2',
-                  style: TextStyle(
-                    color: Colors.grey[500]!,
-                    fontSize: 12,
+    return Column(
+      children: [
+        UTC2Logo(
+          welcomeTitle:'Tạo tài khoản mới',
+          welcomeSubtitle: 'Chào mừng bạn đến UTC2 ngay hôm nay',
+        ),
+        Expanded(
+          child: AuthScaffold(
+            child: Column(
+              children: [
+                // Nội dung chính của AuthScaffold
+                // SizedBox(height: 40),
+                CustomTextField(
+                  hintText: 'Họ và tên',
+                  prefixIcon: Icons.person,
+                  controller: _nameController,
+                ),
+                CustomTextField(
+                  hintText: 'Email',
+                  prefixIcon: Icons.email,
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                CustomTextField(
+                  hintText: 'Số điện thoại',
+                  prefixIcon: Icons.phone,
+                  controller: _phoneController,
+                  keyboardType: TextInputType.phone,
+                ),
+                CustomTextField(
+                  hintText: 'mm/dd/yyyy',
+                  prefixIcon: Icons.calendar_today,
+                  controller: _birthdateController,
+                  isDatePicker: true,
+                ),
+                CustomDropdown(
+                  hintText: 'Chọn giới tính',
+                  prefixIcon: Icons.person_outline,
+                  items: ['Nam', 'Nữ', 'Khác'],
+                  selectedValue: _selectedGender,
+                  onChanged: (String? newValue) {
+                    setState(() => _selectedGender = newValue);
+                  },
+                ),
+                CustomTextField(
+                  hintText: 'Mật khẩu',
+                  prefixIcon: Icons.lock,
+                  controller: _passwordController,
+                  isPassword: true,
+                ),
+                CustomTextField(
+                  hintText: 'Xác nhận mật khẩu',
+                  prefixIcon: Icons.lock,
+                  controller: _confirmPasswordController,
+                  isPassword: true,
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _agreeTerms,
+                      onChanged: (bool? value) {
+                        setState(() => _agreeTerms = value ?? false);
+                      },
+                      fillColor: MaterialStateProperty.all(Colors.orange),
+                    ),
+                    Expanded(
+                      child: Text(
+                        'Tôi đồng ý với Điều khoản sử dụng và Chính sách bảo mật của UTC2',
+                        style: TextStyle(
+                          color: Colors.grey[500]!,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 24),
+                CustomButton(
+                  text: 'Đăng ký tài khoản',
+                  icon: Icons.person_add,
+                  onPressed: _handleRegister,
+                  isLoading: _isLoading,
+                ),
+                SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        color: Colors.grey[500]!,
+                        thickness: 1,
+                        endIndent: 8,
+                      ),
+                    ),
+                    Text(
+                      'hoặc',
+                      style: TextStyle(color: Colors.grey[500]!),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        color: Colors.grey[500]!,
+                        thickness: 1,
+                        indent: 8,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Đã có tài khoản?',
+                  style: TextStyle(color: Colors.grey[500]!),
+                ),
+                SizedBox(height: 8),
+                TextButton(
+                  onPressed: () => NavigationHelper.navigateToLogin(context),
+                  style: TextButton.styleFrom(
+                    side: BorderSide(color: Colors.blue),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.login,
+                          color: Colors.blue,
+                          size: 18,
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          'Đăng nhập ngay',
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 24),
-          CustomButton(
-            text: 'Đăng ký tài khoản',
-            icon: Icons.person_add,
-            onPressed: _handleRegister,
-            isLoading: _isLoading,
-          ),
-          SizedBox(height: 20),
-          Row(
-            children: [
-              Expanded(
-                child: Divider(
-                  color: Colors.grey[500]!,
-                  thickness: 1,
-                  endIndent: 8,
-                ),
-              ),
-              Text(
-                'hoặc',
-                style: TextStyle(color: Colors.grey[500]!),
-              ),
-              Expanded(
-                child: Divider(
-                  color: Colors.grey[500]!,
-                  thickness: 1,
-                  indent: 8,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 8),
-          Text(
-            'Đã có tài khoản?',
-            style: TextStyle(color: Colors.grey[500]!),
-          ),
-          SizedBox(height: 8),
-          TextButton(
-            onPressed: () => NavigationHelper.navigateToLogin(context),
-            style: TextButton.styleFrom(
-              side: BorderSide(color: Colors.blue),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.login,
-                    color: Colors.blue,
-                    size: 18,
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    'Đăng nhập ngay',
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                ],
-              ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

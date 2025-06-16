@@ -10,15 +10,7 @@ class AuthScaffold extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          // gradient: LinearGradient(
-          //   begin: Alignment.topCenter,
-          //   end: Alignment.bottomCenter,
-          //   colors: [
-          //     Colors.grey[500]!,
-          //     Colors.grey[700]!,
-          //   ],
-          // ),
-          color: Colors.grey[300],
+          color: Colors.grey[100],
         ),
         child: SafeArea(
           child: SingleChildScrollView(

@@ -56,128 +56,119 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AuthScaffold(
-      child: Column(
-        children: [
-          SizedBox(height: 80),
-          UTC2Logo(),
-          SizedBox(height: 20),
-          Text(
-            'Chào mừng trở lại',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 8),
-          Text(
-            'Đăng nhập vào tài khoản của bạn',
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: 16,
-            ),
-          ),
-          SizedBox(height: 60),
-          CustomTextField(
-            hintText: 'Email',
-            prefixIcon: Icons.email,
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-          ),
-          CustomTextField(
-            hintText: 'Mật khẩu',
-            prefixIcon: Icons.lock,
-            controller: _passwordController,
-            isPassword: true,
-          ),
-          SizedBox(height: 24),
-          CustomButton(
-            text: 'Đăng nhập',
-            icon: Icons.login,
-            onPressed: _handleLogin,
-            isLoading: _isLoading,
-          ),
-          SizedBox(height: 16),
-          TextButton(
-            onPressed: () => NavigationHelper.navigateToForgotPassword(context),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
+    return Column(
+      children: [
+        UTC2Logo(
+          welcomeTitle: 'Chào mừng trở lại',
+          welcomeSubtitle: 'Đăng nhập vào tài khoản của bạn',
+        ),
+        Expanded(
+          child: AuthScaffold(
+            child: Column(
               children: [
-                Icon(
-                  Icons.vpn_key,
-                  color: Colors.blue,
-                  size: 18,
+                // Nội dung chính của AuthScaffold
+                CustomTextField(
+                  hintText: 'Email',
+                  prefixIcon: Icons.email,
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
                 ),
-                SizedBox(width: 6),
+                CustomTextField(
+                  hintText: 'Mật khẩu',
+                  prefixIcon: Icons.lock,
+                  controller: _passwordController,
+                  isPassword: true,
+                ),
+                SizedBox(height: 24),
+                CustomButton(
+                  text: 'Đăng nhập',
+                  icon: Icons.login,
+                  onPressed: _handleLogin,
+                  isLoading: _isLoading,
+                ),
+                SizedBox(height: 16),
+                TextButton(
+                  onPressed: () => NavigationHelper.navigateToForgotPassword(context),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.vpn_key,
+                        color: Colors.blue,
+                        size: 18,
+                      ),
+                      SizedBox(width: 6),
+                      Text(
+                        'Quên mật khẩu?',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          // decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 40),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        color: Colors.grey[500]!,
+                        thickness: 1,
+                        endIndent: 8,
+                      ),
+                    ),
+                    Text(
+                      'hoặc',
+                      style: TextStyle(color: Colors.grey[500]!),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        color: Colors.grey[500]!,
+                        thickness: 1,
+                        indent: 8,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8),
                 Text(
-                  'Quên mật khẩu?',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    // decoration: TextDecoration.underline,
+                  'Chưa có tài khoản?',
+                  style: TextStyle(color: Colors.grey[500]!),
+                ),
+                SizedBox(height: 8),
+                TextButton(
+                  onPressed: () => NavigationHelper.navigateToRegister(context),
+                  style: TextButton.styleFrom(
+                    side: BorderSide(color: Colors.blue),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.person_add,
+                          color: Colors.blue,
+                          size: 18,
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          'Đăng ký ngay',
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 40),
-          Row(
-            children: [
-              Expanded(
-                child: Divider(
-                  color: Colors.grey[500]!,
-                  thickness: 1,
-                  endIndent: 8,
-                ),
-              ),
-              Text(
-                'hoặc',
-                style: TextStyle(color: Colors.grey[500]!),
-              ),
-              Expanded(
-                child: Divider(
-                  color: Colors.grey[500]!,
-                  thickness: 1,
-                  indent: 8,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 8),
-          Text(
-            'Chưa có tài khoản?',
-            style: TextStyle(color: Colors.grey[500]!),
-          ),
-          SizedBox(height: 8),
-          TextButton(
-            onPressed: () => NavigationHelper.navigateToRegister(context),
-            style: TextButton.styleFrom(
-              side: BorderSide(color: Colors.blue),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.person_add,
-                    color: Colors.blue,
-                    size: 18,
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    'Đăng ký ngay',
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

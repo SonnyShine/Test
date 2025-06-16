@@ -16,6 +16,7 @@ class UTC2App extends StatelessWidget {
         primarySwatch: Colors.orange,
         fontFamily: 'Roboto',
       ),
+      debugShowCheckedModeBanner: false,
       initialRoute: '/register',
       routes: {
         '/register': (context) => RegisterScreen(),

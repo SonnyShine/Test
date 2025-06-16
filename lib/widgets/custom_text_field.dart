@@ -7,6 +7,7 @@ class CustomTextField extends StatefulWidget {
   final bool isDatePicker;
   final TextEditingController? controller;
   final TextInputType? keyboardType;
+  final ValueChanged<String>? onChanged;
 
   const CustomTextField({
     Key? key,
@@ -16,6 +17,7 @@ class CustomTextField extends StatefulWidget {
     this.isDatePicker = false,
     this.controller,
     this.keyboardType,
+    this.onChanged
   }) : super(key: key);
 
   @override
@@ -45,6 +47,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         controller: widget.controller,
         obscureText: widget.isPassword ? _obscureText : false,
         keyboardType: widget.keyboardType,
+        onChanged: widget.onChanged,
         decoration: InputDecoration(
           hintText: widget.hintText,
           hintStyle: TextStyle(color: Colors.grey[500]),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/database_helper.dart';
 import '../widgets/auth_scaffold.dart';
 import '../widgets/utc2_logo.dart';
 import '../widgets/custom_text_field.dart';
@@ -22,36 +23,104 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _handleLogin() async {
+  Future<void> _handleLogin() async {
     if (!_validateForm()) return;
 
     setState(() => _isLoading = true);
 
-    // Simulate API call
-    await Future.delayed(Duration(seconds: 2));
+    try {
+      final result = await DatabaseHelper().loginUser(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
 
-    setState(() => _isLoading = false);
+      if (result['success']) {
+        final user = result['user'];
+        _showMessage(result['message'], isError: false);
 
-    // Show success message
+        // TODO: Lưu thông tin user và navigate to home
+        // await _saveUserSession(user);
+        // NavigationHelper.navigateToHome(context, user);
+      } else {
+        _showMessage(result['message'], isError: true);
+      }
+    } catch (e) {
+      _showMessage('Có lỗi xảy ra: ${e.toString()}', isError: true);
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  bool _validateForm() {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    if (email.isEmpty) {
+      _showMessage('Vui lòng nhập email!', isError: true);
+      return false;
+    }
+
+    if (password.isEmpty) {
+      _showMessage('Vui lòng nhập mật khẩu!', isError: true);
+      return false;
+    }
+
+    if (!_isValidEmail(email)) {
+      _showMessage('Email không hợp lệ!', isError: true);
+      return false;
+    }
+
+    return true;
+  }
+
+  bool _isValidEmail(String email) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+  }
+
+  void _showMessage(String message, {required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Đăng nhập thành công!'),
-        backgroundColor: Colors.green,
+        content: Row(
+          children: [
+            Icon(
+              isError ? Icons.error_outline : Icons.check_circle_outline,
+              color: Colors.white,
+              size: 20,
+            ),
+            SizedBox(width: 8),
+            Expanded(
+              child: Text(message, style: TextStyle(fontSize: 14)),
+            ),
+          ],
+        ),
+        backgroundColor: isError ? Colors.red : Colors.green,
+        duration: Duration(seconds: 3),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     );
   }
 
-  bool _validateForm() {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Vui lòng điền đầy đủ thông tin!'),
-          backgroundColor: Colors.red,
+  Widget _buildDivider() {
+    return Row(
+      children: [
+        Expanded(
+          child: Divider(
+            color: Colors.grey[500],
+            thickness: 1,
+            endIndent: 8,
+          ),
         ),
-      );
-      return false;
-    }
-    return true;
+        Text('hoặc', style: TextStyle(color: Colors.grey[500])),
+        Expanded(
+          child: Divider(
+            color: Colors.grey[500],
+            thickness: 1,
+            indent: 8,
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -66,7 +135,6 @@ class _LoginScreenState extends State<LoginScreen> {
           child: AuthScaffold(
             child: Column(
               children: [
-                // Nội dung chính của AuthScaffold
                 CustomTextField(
                   hintText: 'Email',
                   prefixIcon: Icons.email,
@@ -92,49 +160,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
-                        Icons.vpn_key,
-                        color: Colors.blue,
-                        size: 18,
-                      ),
+                      Icon(Icons.vpn_key, color: Colors.blue, size: 18),
                       SizedBox(width: 6),
                       Text(
                         'Quên mật khẩu?',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          // decoration: TextDecoration.underline,
-                        ),
+                        style: TextStyle(color: Colors.blue),
                       ),
                     ],
                   ),
                 ),
                 SizedBox(height: 40),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey[500]!,
-                        thickness: 1,
-                        endIndent: 8,
-                      ),
-                    ),
-                    Text(
-                      'hoặc',
-                      style: TextStyle(color: Colors.grey[500]!),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        color: Colors.grey[500]!,
-                        thickness: 1,
-                        indent: 8,
-                      ),
-                    ),
-                  ],
-                ),
+                _buildDivider(),
                 SizedBox(height: 8),
                 Text(
                   'Chưa có tài khoản?',
-                  style: TextStyle(color: Colors.grey[500]!),
+                  style: TextStyle(color: Colors.grey[500]),
                 ),
                 SizedBox(height: 8),
                 TextButton(
@@ -150,11 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(
-                          Icons.person_add,
-                          color: Colors.blue,
-                          size: 18,
-                        ),
+                        Icon(Icons.person_add, color: Colors.blue, size: 18),
                         SizedBox(width: 8),
                         Text(
                           'Đăng ký ngay',
